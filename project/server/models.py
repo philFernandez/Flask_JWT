@@ -38,3 +38,19 @@ class User(db.Model):
             )
         except Exception as e:
             return e
+
+    @staticmethod
+    def decode_auth_token(auth_token):
+        """
+        Decodes the Auth Token
+        :param auth_token:
+        :return: integer|string
+        """
+        try:
+            payload = jwt.decode(auth_token, app.config.get(
+                'SECRET_KEY'), algorithms='HS256')
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please login again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please login again.'
