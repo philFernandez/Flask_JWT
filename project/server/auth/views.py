@@ -70,6 +70,12 @@ class LoginAPI(MethodView):
                         'auth_token': auth_token
                     }
                     return make_response(jsonify(responseObject)), 200
+            elif user:
+                responseObject = {
+                    'status': 'fail',
+                    'message': 'Incorrect password.'
+                }
+                return make_response(jsonify(responseObject)), 401
             else:
                 responseObject = {
                     'status': 'fail',
@@ -80,7 +86,7 @@ class LoginAPI(MethodView):
             print(F"ERROR in {__file__} -:- {e}")
             responseObject = {
                 'status': 'fail',
-                'message': 'Try again'
+                'message': 'Try again.'
             }
             return make_response(jsonify(responseObject)), 500
 
